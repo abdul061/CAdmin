@@ -1,0 +1,81 @@
+.admin-container {
+    width: 80%;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.admin-card {
+  background: #f5f3ff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0px 6px 12px rgba(0,0,0,0.1);
+}
+
+.admin-card h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #5a4fcf;
+}
+
+.form-grid {
+  display: flex;
+  gap: 20px;
+}
+
+.form-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.submit-btn {
+  padding: 12px;
+  background: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: #574ae2;
+}
+
+.students-list {
+  margin-top: 30px;
+}
+
+.students-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.students-list th, .students-list td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.students-list th {
+  background: #dcd6ff;
+}
+
+/* ✅ Mobile responsive */
+@media (max-width: 768px) {
+  .form-grid {
+    flex-direction: column;
+  }
+}
