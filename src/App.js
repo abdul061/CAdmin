@@ -6,7 +6,7 @@ import AddStd from './pages/AddStudent'
 
 function App() {
   return (
-    <Router>
+    <Router  basename="/CAdmin">
       <AppRoutes />
     </Router>
   );
