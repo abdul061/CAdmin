@@ -20,7 +20,7 @@ function AppRoutes() {
         <Route path="/" element={<Navbar />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path='/addstd' element={<AddStd />} />
-        {/* {location.pathname === '/login' && <Navbar />} */}
+        {location.pathname === '/login' && <Navbar />}
       </Routes>
     </Fragment>
   );
