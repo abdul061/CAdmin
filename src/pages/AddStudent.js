@@ -89,7 +89,7 @@ export default function AddStudent() {
   return (
     <div className="admin-container">
       <div className="admin-card">
-        <h1>Admin - Add Internship Details</h1>
+        <h1>Admin - Add Student Details</h1>
 
         {/* ✅ Two column form */}
         <div className="form-grid">
@@ -98,7 +98,7 @@ export default function AddStudent() {
             <input type="text" name="name" placeholder="Student Name" value={student.name} onChange={handleChange} />
             <input type="date" name="dob" value={student.dob} onChange={handleChange} />
             <input type="text" name="course" placeholder="Course" value={student.course} onChange={handleChange} />
-            <input type="text" name="internship" placeholder="Internship Name" value={student.internship} onChange={handleChange} />
+            <input type="text" name="internship" placeholder="Course Details" value={student.internship} onChange={handleChange} />
             <input type="text" name="duration" placeholder="Duration (e.g., 3 Months)" value={student.duration} onChange={handleChange} />
           </div>
 
