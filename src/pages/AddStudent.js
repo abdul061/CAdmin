@@ -67,6 +67,7 @@ export default function AddStudent() {
       } catch (err) {
         console.error("Error saving student:", err);
         alert("Failed to add student. Try again!");
+        console.log("Posting to:", `${process.env.REACT_APP_BACKEND_URL}/api/addstudent`);
       }
     } else {
       alert("Please fill all fields!");
