@@ -19,14 +19,14 @@ function Login() {
     setError("");
 
     try {
-      const res = await axios.post(`${process.env.Backend_URL}api/login`, {
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/login`, {
         email,
         password,
       });
 
       if (res.data.success) {
         alert("✅ Login successful!");
-        navigate("/"); // redirect after login
+        navigate("/addstd"); // redirect after login
       } else {
         setError(res.data.message || "❌ Invalid credentials");
       }

@@ -17,8 +17,8 @@ function AppRoutes() {
   return (
     <Fragment>
       <Routes>
-        <Route path="/" element={<Navbar />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/addstd" element={<Navbar />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path='/addstd' element={<AddStd />} />
         {location.pathname === '/login' && <Navbar />}
       </Routes>

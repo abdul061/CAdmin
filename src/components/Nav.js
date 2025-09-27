@@ -27,7 +27,7 @@ export default function Nav() {
       return;
     }
     try {
-      const res = await axios.get(`${process.env.Backend_URL}/api/searchstudent`, {
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/searchstudent`, {
         params: { rollNo, dob }, // send both as query string
       });
 

@@ -42,8 +42,10 @@ export default function AddStudent() {
     ) {
       try {
         // ✅ Send student data to backend
+        console.log("Posting to:", `${process.env.REACT_APP_BACKEND_URL}/api/addstudent`);
+
         console.log(student)
-        const res = await axios.post(`${process.env.Backend_URL}api/addstudent`, student);
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/addstudent`, student);
         console.log("Response:", res.data);
 
         setGeneratedQR(student); // store student to generate QR
@@ -117,7 +119,7 @@ export default function AddStudent() {
       {generatedQR && (
         <div className="qr-section" ref={qrRef} style={{ textAlign: "center", marginTop: "30px" }}>
           <h3>Generated QR Code for {generatedQR.name}:</h3>
-          <QRCodeCanvas value={`http://localhost:3000/student/${generatedQR.rollNo}`} size={200} />
+          <QRCodeCanvas value={`https://coderzacademy.com/student/${generatedQR.rollNo}`} size={200} />
           <br /><br />
           <button onClick={handleDownload}>Download QR</button>
         </div>
