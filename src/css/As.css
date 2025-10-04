@@ -169,3 +169,82 @@ select:focus {
 .copy-box button:hover {
   background: #574ae2;
 }
+/* QR Code Section */
+.qr-section {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.qr-section h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.qr-section canvas {
+  margin: 10px 0;
+  border-radius: 12px;
+}
+
+.copy-box {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.copy-box input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 0.95rem;
+  background-color: #fff;
+}
+
+.copy-box button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.copy-box button:first-child {
+  background-color: #4a3aff;
+  color: #fff;
+}
+
+.copy-box button:first-child:hover {
+  background-color: #3a2edb;
+}
+
+.copy-box button:last-child {
+  background-color: #00b894;
+  color: #fff;
+}
+
+.copy-box button:last-child:hover {
+  background-color: #019e77;
+}
+
+/* Responsive for mobile */
+@media (max-width: 480px) {
+  .qr-section {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .copy-box button {
+    width: 100%;
+  }
+}
