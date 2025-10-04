@@ -14,9 +14,29 @@ export default function Nav() {
   const [studentData, setStudentData] = useState(null);
   const [error, setError] = useState("");
 
+  // 🔹 For all students
+  const [allStudents, setAllStudents] = useState([]);
+
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    window.location.href = "/login";
+    window.location.href = "/";
+  };
+
+  // 🔹 Format date to DD-MM-YYYY for sending to backend
+  const formatDateForBackend = (dateStr) => {
+    if (!dateStr) return "";
+    const parts = dateStr.split("-");
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+  };
+
+  // 🔹 Format ISO date to DD-MM-YYYY for display
+  const formatDisplayDate = (isoDate) => {
+    if (!isoDate) return "";
+    const date = new Date(isoDate);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   };
 
   // 🔹 Search student by Roll No & DOB
@@ -26,10 +46,13 @@ export default function Nav() {
       setStudentData(null);
       return;
     }
+
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/searchstudent`, {
-        params: { rollNo, dob }, // send both as query string
-      });
+      const formattedDob = formatDateForBackend(dob);
+      const res = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}api/searchStudent`,
+        { rollNo, dob: formattedDob }
+      );
 
       setStudentData(res.data);
       setError("");
@@ -40,14 +63,35 @@ export default function Nav() {
       } else {
         setError("Failed to fetch data. Check backend.");
       }
+      setStudentData(null);
     }
+  };
+
+  // 🔹 Fetch all students
+  const fetchAllStudents = async () => {
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}api/getAllStudents`);
+      setAllStudents(res.data);
+    } catch (err) {
+      console.error("Error fetching all students:", err);
+      setAllStudents([]);
+    }
+  };
+
+  // 🔹 Group students by course
+  const groupByCourse = (students) => {
+    return students.reduce((acc, student) => {
+      if (!acc[student.course]) acc[student.course] = [];
+      acc[student.course].push(student);
+      return acc;
+    }, {});
   };
 
   return (
     <div className="intern-container">
       {/* Sidebar */}
       <div className={`sidebar ${isOpen ? "open" : ""}`}>
-        <h2 className="logo">E-Certificate</h2>
+        <h2 className="logo">Admin-Panel</h2>
 
         <div
           className={`sidebar-item ${active === "" ? "active" : ""}`}
@@ -77,6 +121,17 @@ export default function Nav() {
           }}
         >
           Add
+        </div>
+
+        <div
+          className={`sidebar-item ${active === "all" ? "active" : ""}`}
+          onClick={() => {
+            setActive("all");
+            fetchAllStudents();
+            setIsOpen(false);
+          }}
+        >
+          All Students
         </div>
 
         {/* Logout */}
@@ -111,30 +166,56 @@ export default function Nav() {
             />
             <button onClick={handleSearch}>Search</button>
 
-            {/* Error Message */}
             {error && <p style={{ color: "red" }}>{error}</p>}
 
-            {/* Student Info in Separate Box */}
             {studentData && (
               <div className="student-box">
                 <h4>Student Details</h4>
                 <p><b>Roll No:</b> {studentData.rollNo}</p>
                 <p><b>Name:</b> {studentData.name}</p>
-                <p><b>DOB:</b> {studentData.dob}</p>
+                <p><b>DOB:</b> {formatDisplayDate(studentData.dob)}</p>
                 <p><b>Course:</b> {studentData.course}</p>
-                <p><b>Internship:</b> {studentData.internship}</p>
-                <p><b>Duration:</b> {studentData.duration}</p>
-                <p><b>Email:</b> {studentData.email}</p>
-                <p><b>Phone:</b> {studentData.phone}</p>
-                <p><b>Address:</b> {studentData.address}</p>
-                <p><b>Mentor:</b> {studentData.mentor}</p>
-                <p><b>Remarks:</b> {studentData.remarks}</p>
+                <p><b>Duration:</b> {studentData.duration} months</p>
+
+                <h4>Modules:</h4>
+                <ol>
+                  {studentData.internship?.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ol>
               </div>
             )}
           </div>
         )}
 
+        {/* 🔹 Add Student Section */}
         {active === "add" && <AddStd />}
+
+        {/* 🔹 All Students Section */}
+{active === "all" && (
+  <div className="all-students-container">
+    <h3>All Students</h3>
+    {allStudents.length === 0 ? (
+      <p>No students found.</p>
+    ) : (
+      Object.entries(groupByCourse(allStudents)).map(([course, students]) => (
+        <div key={course} className="course-block">
+          <h4 style={{ color: "#4a3aff" }}>{course}</h4>
+          <div className="student-list">
+            {students.map((stu) => (
+              <div key={stu._id} className="student-card">
+                <p><b>Roll No:</b> {stu.rollNo}</p>
+                <p><b>Name:</b> {stu.name}</p>
+                <p><b>DOB:</b> {formatDisplayDate(stu.dob)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    )}
+  </div>
+)}
+
       </div>
     </div>
   );

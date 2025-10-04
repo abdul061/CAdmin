@@ -6,7 +6,26 @@
 
 .intern-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh; /* ✅ allows page to grow beyond screen height */
+}
+.logo {
+  margin-bottom: 40px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 24px;
+background: linear-gradient(90deg, #9180e5, #b2a4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: default;
+  padding-top: 20px;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
 }
 
 /* Sidebar */
@@ -16,7 +35,7 @@
   color: #333;
   display: flex;
   flex-direction: column;
-  padding: 0px 8px ;
+  padding: 0px 8px;
   transition: transform 0.3s ease-in-out;
 
   position: fixed;      /* ✅ keep it fixed */
@@ -65,12 +84,16 @@
 /* Main content */
 .main-content {
   flex: 1;
-  margin-left: 220px;   /* ✅ same as sidebar width */
+  margin-left: 220px;
   background: #f9f9ff;
+
+  /* ✅ Centering */
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+
+  padding: 0px 0px 0px 10px;
+  min-height: 100vh;
 }
 
 .form-container {
@@ -125,8 +148,14 @@
 
   .main-content {
     margin-left: 0;
+
+    /* ✅ Keep centered on mobile too */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
   }
 }
+
 .sidebar-item.logout {
   margin-top: auto; /* pushes it to the bottom */
   color: red;
@@ -151,4 +180,69 @@
 
 .student-box p {
   margin: 5px 0;
+}
+/* Container for all student cards */
+.student-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+/* Individual student card */
+.student-card {
+  background: #f4f4ff;
+  border: 2px solid #c3baff;
+  border-radius: 12px;
+  padding: 15px;
+  width: 200px; /* fixed width for uniformity */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.student-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.student-card p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+/* Container for all students section */
+.all-students-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* space between courses */
+}
+
+/* Each course section */
+.course-block {
+  background: #f4f4ff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Students inside course */
+.student-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* space between cards */
+  margin-top: 15px;
+}
+
+/* Individual student card */
+.student-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  width: 200px; /* fixed width for uniform cards */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.student-card:hover {
+  transform: translateY(-3px);
 }
