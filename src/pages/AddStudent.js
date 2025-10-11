@@ -18,17 +18,15 @@ export default function AddStudent() {
   const [copied, setCopied] = useState(false);
 
   const coursesWithDetails = {
-    "Full Stack Development": ["HTML / CSS", "JavaScript", "React", "Node.js", "Database (SQL/MongoDB)", "Projects"],
-    "Python Programming": ["Python Basics", "OOP in Python", "Django / Flask", "APIs", "Projects"],
-    "Java Development": ["Core Java", "OOP & Collections", "Spring Boot", "JPA / Hibernate", "Projects"],
-    "Data Science": ["Python for Data Science", "Pandas / Numpy", "Machine Learning", "Deep Learning", "Projects"],
-    "React Frontend": ["HTML / CSS", "JavaScript (ES6+)", "React Basics", "React Hooks", "Redux / State Management", "Projects"],
-    "C++ Programming": ["C++ Basics", "OOP Concepts", "STL", "DSA", "Projects"],
+    "Certification in Computer Application With Programming": ["MS Office", "C", "C++", "Python", "Java", "Projects"],
+    "Certification in Computer Application With Tally Prime": ["MS Office", "Tally Prime"],
+    "Certification in Advance Python Programming": ["C", "C++", "Python","Projects"],
+    "Certification inTally Prime": ["Tally Prime", "MS Excel" , "Projects"],
+    "Certification in MS Office": ["MS Word", "MS Excel", "MS Powerpoint"]
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === "course") {
       setStudent({
         ...student,
@@ -58,12 +56,11 @@ export default function AddStudent() {
     }
   };
 
-  const formatDOB = (date) => {
-    const d = new Date(date);
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const year = d.getFullYear();
-    return `${day}-${month}-${year}`;
+  // Convert DOB to YYYY-MM-DD (safe for MongoDB Date)
+  const formatDOBForDB = (date) => {
+    if (!date) return null;
+    const [year, month, day] = date.split("-");
+    return new Date(`${year}-${month}-${day}`);
   };
 
   const handleSubmit = async () => {
@@ -78,11 +75,10 @@ export default function AddStudent() {
       try {
         const studentData = {
           ...student,
-          dob: formatDOB(student.dob),
+          dob: formatDOBForDB(student.dob), // Convert to Date object
         };
 
-        await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/addstudent`, studentData);
-
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/addstudent`, studentData);
         setGeneratedQR(studentData);
         alert("Student added successfully!");
 
@@ -95,8 +91,12 @@ export default function AddStudent() {
           duration: "",
         });
       } catch (err) {
-        console.error("Error saving student:", err);
-        alert("Failed to add student. Try again!");
+        console.error("Error saving student:", err.response?.data || err.message);
+        if (err.response?.data?.error) {
+          alert(err.response.data.error);
+        } else {
+          alert("Failed to add student. Try again!");
+        }
       }
     } else {
       alert("Please fill all fields!");
@@ -104,7 +104,7 @@ export default function AddStudent() {
   };
 
   const qrLink = generatedQR
-    ? `https://coderzacademy.com/#/internship/${generatedQR.rollNo}-${generatedQR.dob}`
+    ? `https://coderzacademy.com/#/internship/${generatedQR.rollNo}-${generatedQR.dob.toISOString().split("T")[0]}`
     : "";
 
   const handleCopy = () => {
@@ -136,26 +136,9 @@ export default function AddStudent() {
 
         <div className="form-grid">
           <div className="form-column">
-            <input
-              type="text"
-              name="rollNo"
-              placeholder="Roll Number"
-              value={student.rollNo}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              name="name"
-              placeholder="Student Name"
-              value={student.name}
-              onChange={handleChange}
-            />
-            <input
-              type="date"
-              name="dob"
-              value={student.dob}
-              onChange={handleChange}
-            />
+            <input type="text" name="rollNo" placeholder="Roll Number" value={student.rollNo} onChange={handleChange} />
+            <input type="text" name="name" placeholder="Student Name" value={student.name} onChange={handleChange} />
+            <input type="date" name="dob" value={student.dob} onChange={handleChange} />
 
             <select name="course" value={student.course} onChange={handleChange}>
               <option value="">Select Course</option>
@@ -169,25 +152,20 @@ export default function AddStudent() {
                 <label><b>Course Details:</b></label>
                 {coursesWithDetails[student.course].map((detail, idx) => (
                   <div key={idx}>
-                    <input
-                      type="checkbox"
-                      value={detail}
-                      checked={student.internship.includes(detail)}
-                      onChange={handleCheckboxChange}
-                    />
+                    <input type="checkbox" value={detail} checked={student.internship.includes(detail)} onChange={handleCheckboxChange} />
                     <span>{detail}</span>
                   </div>
                 ))}
               </div>
             )}
 
-            <input
-              type="text"
-              name="duration"
-              placeholder="Duration (e.g., 3 Months)"
-              value={student.duration}
-              onChange={handleChange}
-            />
+            {/* Month select for duration */}
+            <select name="duration" value={student.duration} onChange={handleChange}>
+              <option value="">Select Duration (Months)</option>
+              {[...Array(12)].map((_, i) => (
+                <option key={i + 1} value={i + 1}>{i + 1} Month{i + 1 > 1 ? "s" : ""}</option>
+              ))}
+            </select>
 
             <button onClick={handleSubmit} className="submit-btn">Add Student</button>
           </div>
@@ -195,42 +173,14 @@ export default function AddStudent() {
       </div>
 
       {generatedQR && (
-        <div
-          className="qr-section"
-          ref={qrRef}
-          style={{
-            textAlign: "center",
-            marginTop: "40px",
-            padding: "20px",
-            border: "1px solid #ddd",
-            borderRadius: "12px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-            backgroundColor: "#f9f9f9",
-            maxWidth: "350px",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
+        <div className="qr-section" ref={qrRef} style={{ textAlign: "center", marginTop: "40px", padding: "20px", border: "1px solid #ddd", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", backgroundColor: "#f9f9f9", maxWidth: "350px", marginLeft: "auto", marginRight: "auto" }}>
           <h3 style={{ marginBottom: "10px" }}>Generated QR Code for {generatedQR.name}</h3>
-          <QRCodeCanvas
-            value={qrLink}
-            size={220}
-            style={{ margin: "10px 0", borderRadius: "12px" }}
-          />
+          <QRCodeCanvas value={qrLink} size={220} style={{ margin: "10px 0", borderRadius: "12px" }} />
           <div className="copy-box" style={{ marginTop: "15px", display: "flex", flexDirection: "column", gap: "10px" }}>
-            <input
-              type="text"
-              readOnly
-              value={qrLink}
-              style={{ padding: "8px", borderRadius: "6px", border: "1px solid #ccc", textAlign: "center" }}
-            />
+            <input type="text" readOnly value={qrLink} style={{ padding: "8px", borderRadius: "6px", border: "1px solid #ccc", textAlign: "center" }} />
             <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
-              <button onClick={handleCopy} style={{ padding: "8px 16px", borderRadius: "6px", backgroundColor: "#4a3aff", color: "#fff", border: "none" }}>
-                {copied ? "Copied!" : "Copy Link"}
-              </button>
-              <button onClick={handleDownload} style={{ padding: "8px 16px", borderRadius: "6px", backgroundColor: "#00b894", color: "#fff", border: "none" }}>
-                Download QR
-              </button>
+              <button onClick={handleCopy} style={{ padding: "8px 16px", borderRadius: "6px", backgroundColor: "#4a3aff", color: "#fff", border: "none" }}>{copied ? "Copied!" : "Copy Link"}</button>
+              <button onClick={handleDownload} style={{ padding: "8px 16px", borderRadius: "6px", backgroundColor: "#00b894", color: "#fff", border: "none" }}>Download QR</button>
             </div>
           </div>
         </div>

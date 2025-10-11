@@ -8,13 +8,13 @@ export default function Nav() {
   const [active, setActive] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  // 🔹 For search
+  // 🔹 Search state
   const [rollNo, setRollNo] = useState("");
   const [dob, setDob] = useState("");
   const [studentData, setStudentData] = useState(null);
   const [error, setError] = useState("");
 
-  // 🔹 For all students
+  // 🔹 All students
   const [allStudents, setAllStudents] = useState([]);
 
   const handleLogout = () => {
@@ -22,14 +22,14 @@ export default function Nav() {
     window.location.href = "/";
   };
 
-  // 🔹 Format date to DD-MM-YYYY for sending to backend
+  // 🔹 Format date for backend (DD-MM-YYYY)
   const formatDateForBackend = (dateStr) => {
     if (!dateStr) return "";
     const parts = dateStr.split("-");
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   };
 
-  // 🔹 Format ISO date to DD-MM-YYYY for display
+  // 🔹 Format for display
   const formatDisplayDate = (isoDate) => {
     if (!isoDate) return "";
     const date = new Date(isoDate);
@@ -39,7 +39,7 @@ export default function Nav() {
     return `${day}-${month}-${year}`;
   };
 
-  // 🔹 Search student by Roll No & DOB
+  // 🔹 Search student
   const handleSearch = async () => {
     if (!rollNo.trim() || !dob.trim()) {
       setError("Please enter both Roll No and DOB.");
@@ -53,7 +53,6 @@ export default function Nav() {
         `${process.env.REACT_APP_BACKEND_URL}api/searchStudent`,
         { rollNo, dob: formattedDob }
       );
-
       setStudentData(res.data);
       setError("");
     } catch (err) {
@@ -78,7 +77,21 @@ export default function Nav() {
     }
   };
 
-  // 🔹 Group students by course
+  // 🔹 Delete student
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this student?")) return;
+    try {
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}api/deletestudent/${id}`);
+      alert("Student deleted successfully!");
+      // Remove from UI
+      setAllStudents(allStudents.filter((stu) => stu._id !== id));
+    } catch (err) {
+      console.error("Error deleting student:", err);
+      alert("Failed to delete student. Try again!");
+    }
+  };
+
+  // 🔹 Group by course
   const groupByCourse = (students) => {
     return students.reduce((acc, student) => {
       if (!acc[student.course]) acc[student.course] = [];
@@ -134,13 +147,12 @@ export default function Nav() {
           All Students
         </div>
 
-        {/* Logout */}
         <div className="sidebar-item logout" onClick={handleLogout}>
           Logout
         </div>
       </div>
 
-      {/* Mobile Toggle Button */}
+      {/* Toggle Button (Mobile) */}
       <button className="toggle-btn" onClick={() => setIsOpen(!isOpen)}>
         ☰
       </button>
@@ -149,7 +161,7 @@ export default function Nav() {
       <div className="main-content">
         {active === "" && <Greet />}
 
-        {/* 🔹 Search Student Section */}
+        {/* 🔹 Search Student */}
         {active === "search" && (
           <div className="form-container">
             <h3>Search Student</h3>
@@ -188,34 +200,49 @@ export default function Nav() {
           </div>
         )}
 
-        {/* 🔹 Add Student Section */}
+        {/* 🔹 Add Student */}
         {active === "add" && <AddStd />}
 
-        {/* 🔹 All Students Section */}
-{active === "all" && (
-  <div className="all-students-container">
-    <h3>All Students</h3>
-    {allStudents.length === 0 ? (
-      <p>No students found.</p>
-    ) : (
-      Object.entries(groupByCourse(allStudents)).map(([course, students]) => (
-        <div key={course} className="course-block">
-          <h4 style={{ color: "#4a3aff" }}>{course}</h4>
-          <div className="student-list">
-            {students.map((stu) => (
-              <div key={stu._id} className="student-card">
-                <p><b>Roll No:</b> {stu.rollNo}</p>
-                <p><b>Name:</b> {stu.name}</p>
-                <p><b>DOB:</b> {formatDisplayDate(stu.dob)}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))
-    )}
-  </div>
-)}
+        {/* 🔹 All Students */}
+        {active === "all" && (
+          <div className="all-students-container">
+            <h3>All Students</h3>
+            {allStudents.length === 0 ? (
+              <p>No students found.</p>
+            ) : (
+              Object.entries(groupByCourse(allStudents)).map(([course, students]) => (
+                <div key={course} className="course-block">
+                  <h4 style={{ color: "#4a3aff" }}>{course}</h4>
+                  <div className="student-list">
+                    {students.map((stu) => (
+                      <div key={stu._id} className="student-card">
+                        <p><b>Roll No:</b> {stu.rollNo}</p>
+                        <p><b>Name:</b> {stu.name}</p>
+                        <p><b>DOB:</b> {formatDisplayDate(stu.dob)}</p>
 
+                        <button
+                          onClick={() => handleDelete(stu._id)}
+                          style={{
+                            marginTop: "10px",
+                            backgroundColor: "#ff4d4d",
+                            color: "#fff",
+                            border: "none",
+                            padding: "6px 12px",
+                            borderRadius: "6px",
+                            cursor: "pointer",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
