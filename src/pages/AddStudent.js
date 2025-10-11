@@ -22,7 +22,8 @@ export default function AddStudent() {
     "Certification in Computer Application With Tally Prime": ["MS Office", "Tally Prime"],
     "Certification in Advance Python Programming": ["C", "C++", "Python","Projects"],
     "Certification inTally Prime": ["Tally Prime", "MS Excel" , "Projects"],
-    "Certification in MS Office": ["MS Word", "MS Excel", "MS Powerpoint"]
+    "Certification in MS Office": ["MS Word", "MS Excel", "MS Powerpoint"],
+    "Certification in MS Excel": ["MS Excel"]
   };
 
   const handleChange = (e) => {
