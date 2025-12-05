@@ -105,7 +105,7 @@ export default function AddStudent() {
   };
 
   const qrLink = generatedQR
-    ? `https://coderzacademy.com/#/internship/${generatedQR.rollNo}-${generatedQR.dob.toISOString().split("T")[0]}`
+    ? `https://coderzacademy.tech/#/internship/${generatedQR.rollNo}-${generatedQR.dob.toISOString().split("T")[0]}`
     : "";
 
   const handleCopy = () => {
