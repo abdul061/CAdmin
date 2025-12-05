@@ -91,7 +91,7 @@ function Login() {
                 </span>
               </h3>
               <p className="text-center mb-4">
-                A Smarter Way to Track &amp; Manage Student Attendance
+                A Smarter Way to Track &amp; Manage Student DATA Effectively
               </p>
 
               {/* ✅ Login Form */}
