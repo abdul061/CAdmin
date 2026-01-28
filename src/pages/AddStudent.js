@@ -26,10 +26,11 @@ export default function AddStudent() {
     "Certification in Computer Application With Tally Prime": ["MS Office", "Tally Prime"],
     "Certification in Advance Python Programming": ["C", "C++", "Python","Projects"],
     "Certification in Advance JAVA Programming": ["C", "C++", "JAVA","Projects"],
-    "Certification in FULLSTACK": ["HTML", "CSS", "JavaScript","React" , "Node.JS", "MongoDB", "GIT"],
+    "Certification in FULLSTACK": ["HTML", "CSS", "JavaScript","React" , "Node.JS", "Express.JS", "JAVA" ,"SPRING BOOT", "Python","   Django","Flask", "MongoDB", "GIT"],
     "Certification in FRONTEND": ["HTML", "CSS", "JavaScript","React" ],
     "Certification in BACKEND": ["Node.JS", "Express.JS", "MongoDB","GIT" ],
-    "Certification inTally Prime": ["Tally Prime", "MS Excel" , "Projects"],
+    "Certification in Tally Prime": ["Tally Prime", "MS Excel" , "Projects"],
+    "Certification in Data Analytics": ["Python","Power BI", "MS Excel","MySql", "R Language","Projects"],
     "Certification in MS Office": ["MS Word", "MS Excel", "MS Powerpoint"],
     "Certification in MS Excel": ["MS Excel"]
   };
@@ -302,6 +303,9 @@ export default function AddStudent() {
                 onChange={handleEditChange}
                 style={{ width: "100%", padding: "8px", marginBottom: "12px" }}
               >
+  <option value="10-days">10 Days</option>
+  <option value="15-days">15 Days</option>
+
                 <option value="">Select Duration (Months)</option>
                 {[...Array(12)].map((_, i) => (
                   <option key={i + 1} value={i + 1}>{i + 1} Month{i + 1 > 1 ? "s" : ""}</option>
