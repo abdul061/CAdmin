@@ -189,6 +189,14 @@ export default function AddStudent() {
       alert("Failed to update student. Try again.");
     }
   };
+  const durationOptions = [
+  { label: "10 Days", value: "10 Days" },
+  { label: "15 Days", value: "15 Days" },
+  ...Array.from({ length: 12 }, (_, i) => ({
+    label: `${i + 1} Month${i + 1 > 1 ? "s" : ""}`,
+    value: `${i + 1} Month${i + 1 > 1 ? "s" : ""}`,
+  })),
+];
 
   const handleCancelEdit = () => {
     setEditMode(false);
@@ -303,15 +311,12 @@ export default function AddStudent() {
                 onChange={handleEditChange}
                 style={{ width: "100%", padding: "8px", marginBottom: "12px" }}
               >
-
-
-                <option value="">Select Duration (Months)</option>
-                    <option value="10-days">10 Days</option>
-       <option value="15-days">15 Days</option>
-                {[...Array(12)].map((_, i) => (
-                  <option key={i + 1} value={i + 1}>{i + 1} Month{i + 1 > 1 ? "s" : ""}</option>
+                <option value="">Select Duration</option>
+                {durationOptions.map((d, i) => (
+                  <option key={i} value={d.value}>{d.label}</option>
                 ))}
               </select>
+
 
               <div style={{ display: "flex", gap: "8px", justifyContent: "center" }}>
                 <button onClick={handleEditSubmit} style={{ padding: "8px 16px", borderRadius: "6px", backgroundColor: "#4a3aff", color: "#fff", border: "none" }}>
