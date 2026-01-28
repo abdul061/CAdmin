@@ -231,13 +231,15 @@ export default function AddStudent() {
                 ))}
               </div>
             )}
+<select name="duration" value={student.duration} onChange={handleChange}>
+  <option value="">Select Duration</option>
+  {durationOptions.map((d, i) => (
+    <option key={i} value={d.value}>
+      {d.label}
+    </option>
+  ))}
+</select>
 
-            <select name="duration" value={student.duration} onChange={handleChange}>
-              <option value="">Select Duration (Months)</option>
-              {[...Array(12)].map((_, i) => (
-                <option key={i + 1} value={i + 1}>{i + 1} Month{i + 1 > 1 ? "s" : ""}</option>
-              ))}
-            </select>
 
             <button onClick={handleSubmit} className="submit-btn">Add Student</button>
           </div>
