@@ -303,10 +303,11 @@ export default function AddStudent() {
                 onChange={handleEditChange}
                 style={{ width: "100%", padding: "8px", marginBottom: "12px" }}
               >
-  <option value="10-days">10 Days</option>
-  <option value="15-days">15 Days</option>
+
 
                 <option value="">Select Duration (Months)</option>
+                    <option value="10-days">10 Days</option>
+       <option value="15-days">15 Days</option>
                 {[...Array(12)].map((_, i) => (
                   <option key={i + 1} value={i + 1}>{i + 1} Month{i + 1 > 1 ? "s" : ""}</option>
                 ))}
