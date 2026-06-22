@@ -26,13 +26,17 @@ export default function AddStudent() {
     "Certification in Computer Application With Tally Prime": ["MS Office", "Tally Prime"],
     "Certification in Advance Python Programming": ["C", "C++", "Python","Projects"],
     "Certification in Advance JAVA Programming": ["C", "C++", "JAVA","Projects"],
-    "Certification in FULLSTACK": ["HTML", "CSS", "JavaScript","React" , "Node.JS", "Express.JS", "JAVA" ,"SPRING BOOT", "Python","   Django","Flask", "MongoDB", "GIT"],
+    "Certification in FULLSTACK": ["HTML", "CSS", "JavaScript","React" , "Node.JS", "Express.JS", "JAVA" ,"SPRING BOOT", "Python","   Django","Flask", "MongoDB", "GIT" , "MySQL"],
     "Certification in FRONTEND": ["HTML", "CSS", "JavaScript","React" ],
     "Certification in BACKEND": ["Node.JS", "Express.JS", "MongoDB","GIT" ],
     "Certification in Tally Prime": ["Tally Prime", "MS Excel" , "Projects"],
     "Certification in Data Analytics": ["Python","Power BI", "MS Excel","MySql", "R Language","Projects"],
     "Certification in MS Office": ["MS Word", "MS Excel", "MS Powerpoint"],
-    "Certification in MS Excel": ["MS Excel"]
+    "Certification in MS Excel": ["MS Excel"],
+    "Certification in C and C++" : ["C", "C++", "Projects"],
+    "Certification in Kids Coding": ["Scratch Python", "Web Desiging"],
+    "Certification in Python and MySQL" : ["Python", "MySQL", "Projects"],
+    "Certification in MySQL" : ["MySQL", "Projects"]
   };
 
   const handleChange = (e) => {
